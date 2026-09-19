@@ -10,9 +10,14 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString("Inventory")
             ?? throw new InvalidOperationException("Connection string 'Inventory' not found.");
 
-        services.AddDbContextFactory<AppDbContext>(options =>
+        services.AddSingleton<AppSaveChangesInterceptor>();
+
+        services.AddDbContextFactory<AppDbContext>((provider, options) =>
         {
+            var interceptor = provider.GetRequiredService<AppSaveChangesInterceptor>();
+
             options.UseNpgsql(connectionString)
+                .AddInterceptors(interceptor)
                 .UseExceptionProcessor();
         });
 
