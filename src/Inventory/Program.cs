@@ -1,4 +1,6 @@
+using HealthChecks.UI.Client;
 using Inventory.Data;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +10,7 @@ var isDevelopment = builder.Environment.IsDevelopment();
 services.AddAppData(builder.Configuration);
 
 var app = builder.Build();
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/health", new HealthCheckOptions { ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse });
 
 app.MapGet("/", () => "Hello World!");
 
