@@ -1,5 +1,6 @@
 using HealthChecks.UI.Client;
 using Inventory.Data;
+using Inventory.Email;
 using Inventory.Identity;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ var isDevelopment = builder.Environment.IsDevelopment();
 
 services.AddAppData(builder.Configuration);
 services.AddAppIdentity();
+services.AddAppEmail(builder.Configuration);
 
 var app = builder.Build();
 app.UseAuthentication();
